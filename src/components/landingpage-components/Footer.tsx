@@ -1,5 +1,5 @@
 import Image from "next/image";
-import footer_bg from "../../public/footer_bg.svg";
+import footer_bg from "../../../public/footer_bg.svg";
 
 export default function Footer() {
 	return (

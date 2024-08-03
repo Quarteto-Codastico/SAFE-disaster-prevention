@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logoSafe from "../../public/logo_safe.png";
+import logoSafe from "../../../public/logo_safe.png";
 import { IoIosArrowDown } from "react-icons/io";
 
 export default function Header() {

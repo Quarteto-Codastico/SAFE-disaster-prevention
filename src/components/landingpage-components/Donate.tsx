@@ -1,7 +1,7 @@
 import { FaPersonBreastfeeding } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa";
 import Image from "next/image";
-import donateBg from "../../public/donate.svg";
+import donateBg from "../../../public/donate.svg";
 
 export default function Donate() {
 	return (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import backgorundHero from "../../public/fundo_hero.png";
+import backgorundHero from "../../../public/fundo_hero.png";
 
 export default function Hero() {
 	return (
