@@ -17,16 +17,16 @@ export default function Header() {
   }
 
   return (
-    <div className="flex fixed w-screen justify-center items-center h-[80px] bg-white px-20 z-10">
-      <div className="flex max-w-[1440px] w-[100%] h-[80px] justify-between items-center">
-        <div className="flex flex-2 h-[80px] justify-start items-center">
+    <div className=" fixed w-full mx-auto h-[80px] bg-white px-20 z-10">
+      <div className="flex max-w-[1440px] w-[100%] h-[80px] justify-between items-center mx-auto">
+        <div className="flex flex-2 h-[80px] justify-start items-center phone:mx-auto">
           <Image
             src={logoSafe}
             alt="logo-safe"
-            className="h-[49px] w-[119px]"
+            className="h-[49px] w-[119px] "
           />
         </div>
-        <div className="flex flex-1 gap-8 justify-center items-center">
+        <div className="flex flex-1 gap-8 justify-center items-center lg:hidden tablet:hidden phone:hidden">
           <a
             href="#hero"
             className="flex gap-3 justify-center items-center text-sm"
@@ -46,7 +46,7 @@ export default function Header() {
             DOAÇÔES <IoIosArrowDown />
           </a>
         </div>
-        <div className="flex flex-2 justify-end  items-center gap-6">
+        <div className="flex flex-2 justify-end  items-center gap-6 phone:hidden">
           <button
             className="py-3 px-8 border-[2px] border-[#000] rounded-[16px]"
             onClick={handleRedirectToLogin}
