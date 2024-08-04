@@ -14,10 +14,11 @@ import {
 
 import { FaMapMarkedAlt } from "react-icons/fa";
 import Link from "next/link";
+import {QRCodeSVG} from 'qrcode.react';
 
 interface CardDonateProps {
 	icon: StaticImageData;
-	qrCode: StaticImageData;
+	qrCode: string;
 	desc: string;
 	title: string;
 	recebedor: string;
@@ -90,12 +91,8 @@ export const CardDonate: React.FC<CardDonateProps> = ({
 						<p className="text-sm text-center font-semibold text-[#5B5B5B] mb-3">
 							{recebedor}
 						</p>
-						<div className="border-[1px] border-[#A8A8A8] rounded-lg mx-auto w-[150px] mb-6">
-							<Image
-								src={qrCode}
-								alt="qr-code"
-								className="h-[150px] w-[150px] p-2 "
-							/>
+						<div className="border-[1px] border-[#A8A8A8] rounded-lg mx-auto w-max p-4">
+						< QRCodeSVG  value = {qrCode}  />
 						</div>
 					</ModalBody>
 				</ModalContent>

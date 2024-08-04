@@ -7,9 +7,12 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  Text,
+  Button,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { FaMapMarkedAlt } from "react-icons/fa";
-import Link from "next/link";
 import { Occurrence } from "@/types/Occurrence"; // Ajuste o caminho conforme necessário
 
 interface OccurrenceDetailsModalProps {
@@ -25,36 +28,46 @@ const OccurrenceDetailsModal: React.FC<OccurrenceDetailsModalProps> = ({
 }) => {
   if (!occurrence) return null;
 
+  const statusMap: { [key: string]: string } = {
+    active: "Ativo",
+    pending: "Pendente",
+    inactive: "Inativo",
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          <h1 className="text-[#5B5B5B] text-2xl font-bold text-center">
-            Detalhes da Ocorrência
-          </h1>
+        <ModalHeader textAlign="center" fontSize="2xl" color="gray.600">
+          Detalhes da Ocorrência
         </ModalHeader>
-        <ModalCloseButton color="#FF5A5A" />
+        <ModalCloseButton color="red.400" />
         <ModalBody>
-          <h1 className="text-[#5B5B5B] text-xl font-bold text-center">
-            {occurrence.title}
-          </h1>
-          <p className="text-sm px-4 text-center font-light">
-            {occurrence.description}
-          </p>
-          <div className="flex justify-center mt-6">
-            <Link
+          <VStack spacing={4} align="start">
+            <Text fontSize="xl" fontWeight="bold" color="gray.700">
+              {occurrence.title}
+            </Text>
+            <Text fontSize="md" color="gray.500">
+              {occurrence.description}
+            </Text>
+            <Text fontSize="sm" color="gray.600">
+              Status: <strong>{statusMap[occurrence.status]}</strong>
+            </Text>
+            <Text fontSize="sm" color="gray.600">
+              Código Postal: <strong>{occurrence.zipCode}</strong>
+            </Text>
+            <Button
+              as="a"
               href={`https://www.google.com/maps?q=${occurrence.latitude},${occurrence.longitude}`}
-              passHref
+              target="_blank"
+              rel="noopener noreferrer"
+              colorScheme="teal"
+              variant="solid"
+              leftIcon={<FaMapMarkedAlt />}
             >
-              <a className="flex justify-between items-center rounded-xl bg-[#3FFFB6] px-4 py-2">
-                <p className="text-sm font-semibold text-[#5B5B5B]">
-                  Ver no Mapa
-                </p>
-                <FaMapMarkedAlt className="text-[#5B5B5B]" />
-              </a>
-            </Link>
-          </div>
+              Ver no Mapa
+            </Button>
+          </VStack>
         </ModalBody>
       </ModalContent>
     </Modal>

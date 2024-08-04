@@ -5,11 +5,12 @@ import donateBg from "../../../public/donate.svg";
 
 export default function Donate() {
 	return (
-		<div id='donate' className="relative h-[1159px] w-[100%] max-w-[1600px] pl-[115px] overflow-hidden mx-auto pt-[110px]">
-			<h1 className="text-[#5B5B5B] font-semibold text-4xl pb-14 w-[700px]">
+		<div id='donate' className="relative h-[1159px] w-[100%] max-w-[1600px] pl-[115px] overflow-hidden mx-auto pt-[110px]
+									tablet:pl-16 phone:pl-8 phone:h-max phone:pl-0">
+			<h1 className="text-[#5B5B5B] font-semibold text-4xl pb-14 w-[700px] tablet:w-[450px] tablet:text-3xl phone:w-[90%]">
 				Doar támbem faz parte, ajude quem necessita! Sua ajuda muda vidas.
 			</h1>
-			<p className=" text-[#5B5B5B] text-base font-light text-justify w-[400px]">
+			<p className=" text-[#5B5B5B] text-base font-light text-justify w-[400px] phone:w-[90%]">
 				&ensp;&ensp;Você já parou para pensar no impacto que um simples gesto de
 				generosidade pode ter na vida de alguém? Vivemos em um mundo onde muitas
 				pessoas enfrentam dificuldades inimagináveis todos os dias. Mas, com sua
@@ -31,18 +32,18 @@ export default function Donate() {
 				necessidades imediatas, mas também investe em um futuro melhor para
 				todos.
 			</p>
-			<h1 className="text-[#5B5B5B] font-light text-4xl w-[300px] mt-20 mb-6">
+			<h1 className="text-[#5B5B5B] font-light text-4xl w-[300px] mt-20 mb-6 phone:mx-auto hone:text-center">
 				Vulnerabilidade Social no Brasil:
 			</h1>
-			<div className="flex items-center h-min">
-				<FaPersonBreastfeeding className="text-5xl text-[#3FFFB6] mr-8" />
-				<FaPlus className="text-3xl text-[#5B5B5B] mr-2" />
-				<h1 className="text-[#5B5B5B] font-bold text-4xl  w-[500px]">
+			<div className="flex items-center h-min phone:mx-auto phone:w-max">
+				<FaPersonBreastfeeding className="text-5xl text-[#3FFFB6] mr-8 hone:text-center" />
+				<FaPlus className="text-3xl text-[#5B5B5B] mr-2 hone:text-center" />
+				<h1 className="text-[#5B5B5B] font-bold text-4xl  w-[500px] phone:w-[190px]">
 					17,5 mi de Famílias
 				</h1>
 			</div>
 
-			<Image src={donateBg} alt="bg-donate" className="absolute top-0 left-[45rem] h-[100%]"  />
+			<Image src={donateBg} alt="bg-donate" className="absolute top-0 left-[45rem] h-[100%] tablet:left-[30rem]"  />
 		</div>
 	);
 }
