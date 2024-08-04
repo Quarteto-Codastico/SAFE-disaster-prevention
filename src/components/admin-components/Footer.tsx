@@ -1,14 +1,18 @@
-import Image from "next/image";
-import footer_bg from "../../../public/footer_bg.svg";
 
-export default function AdminFooter() {
-  return (
-    <div className="w-full flex flex-col md:flex-row justify-around bg-[#75FFCA] py-3 flex-wrap mx-auto text-center">
-      <p>SAFE prevenção de catástrofes</p>
-      <p className="hidden md:flex">|</p>
-      <p>© 2024</p>
-      <p className="hidden md:flex">|</p>
-      <p>Desenvolvido por Quarteto Codástico</p>
-    </div>
-  );
+export default function Footer() {
+	return (
+		<div className="flex absolute w-[100%] max-w-[1600px] h-[23px] mx-auto bottom-0 bg-adminGradient justify-center items-center">
+			<div className="flex justify-between w-[70%] font-extraligh text-xs text-white">
+				<p className="flex flex-1 justify-center min-w-[400px]">
+					SAFE prevenção de catástrofes
+				</p>
+				<p className="flex flex-1 justify-center text-[8px]">|</p>
+				<p className="flex flex-1 justify-center"> © 2024</p>
+				<p className="flex flex-1 justify-center text-[8px]">|</p>
+				<p className="flex flex-1 justify-center min-w-[400px]">
+					Desenvolvido por Quarteto Codástico
+				</p>
+			</div>
+		</div>
+	);
 }
