@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Occurrence } from "@/types/Occurrence";
 import { setupAPIClient } from "@/app/lib/api";
-import OccurrenceDetailsModal from "./OccurrenceDetailsModal";
+import AdminOccurrenceDetailsModal from "../admin-components/Modals/AdminOccurrenceDetailsModal";
 
 // URLs dos ícones para o Leaflet
 const iconUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png";
@@ -102,7 +102,7 @@ const Map = () => {
           }
         >
           <Popup>
-            <OccurrenceDetailsModal occurrence={occurrence} />
+            <AdminOccurrenceDetailsModal occurrence={occurrence} />
           </Popup>
         </Marker>
       ))}
