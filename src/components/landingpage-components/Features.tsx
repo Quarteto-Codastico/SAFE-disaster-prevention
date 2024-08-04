@@ -5,7 +5,7 @@ import { BiSolidDonateHeart } from "react-icons/bi";
 
 export default function Features() {
 	return (
-		<div className="flex flex-col h-[562px] max-w-[1600px] w-[100%] px-[79px] justify-center mx-auto">
+		<div id='features' className="flex flex-col h-[562px] max-w-[1600px] w-[100%] px-[79px] justify-center mx-auto">
             <h1 className="text-[#5B5B5B] font-semibold text-2xl pb-14 pl-9">Conheça as Funcionalidades</h1>
 			<div className="flex gap-32 items-center justify-between self-center">
 				<CardFeatures
