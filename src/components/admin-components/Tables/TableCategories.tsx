@@ -20,16 +20,10 @@ export default function TableCategories({ categories }: TableCategoriesProps) {
       <Table variant="striped" size="sm" className="w-full border-collapse">
         <Thead className="bg-[#75FFCA] border-b border-[#75FFCA]">
           <Tr>
-            <Th className="text-left px-4 py-2 border-r border-[#75FFCA]">
-              Nome
-            </Th>
-            <Th className="text-left px-4 py-2 border-r border-[#75FFCA]">
-              Status
-            </Th>
-            <Th className="text-left px-4 py-2 border-r border-[#75FFCA]">
-              Criado em
-            </Th>
-            <Th className="text-left px-4 py-2">Última atualização</Th>
+            <Th textAlign="center">Nome</Th>
+            <Th textAlign="center">Status</Th>
+            <Th textAlign="center">Criado em</Th>
+            <Th textAlign="center">Última atualização</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -39,16 +33,12 @@ export default function TableCategories({ categories }: TableCategoriesProps) {
                 key={category.id}
                 className="hover:bg-gray-100 border-b border-[#75FFCA]"
               >
-                <Td className="px-4 py-2 border-r border-[#75FFCA]">
-                  {category.name}
-                </Td>
-                <Td className="px-4 py-2 border-r border-[#75FFCA]">
-                  {category.status.toUpperCase()}
-                </Td>
-                <Td className="px-4 py-2 border-r border-[#75FFCA]" isNumeric>
+                <Td textAlign="center">{category.name}</Td>
+                <Td textAlign="center">{category.status.toUpperCase()}</Td>
+                <Td textAlign="center">
                   {getFormattedDate(category.createdAt)}
                 </Td>
-                <Td className="px-4 py-2 border-r border-[#75FFCA]" isNumeric>
+                <Td textAlign="center">
                   {getFormattedDate(category.updatedAt)}
                 </Td>
               </Tr>

@@ -1,3 +1,4 @@
+import { setupAPIClient } from "@/app/lib/api";
 import {
   Button,
   FormControl,
@@ -11,12 +12,61 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import { AxiosError } from "axios";
 import React from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 
-export default function CreateCategoryModal() {
+type CreateCategoryModalProps = {
+  refetchCategories: () => void;
+};
+
+export default function CreateCategoryModal({
+  refetchCategories,
+}: CreateCategoryModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [name, setName] = React.useState("");
+  const api = setupAPIClient();
+  const toast = useToast();
+
+  const handleCreateCategory = async () => {
+    if (!name) {
+      toast({
+        title: "Nome da categoria é obrigatório",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top-right",
+      });
+      return;
+    }
+
+    try {
+      await api.post("/categories", { name }, { withCredentials: true });
+      refetchCategories();
+      onClose();
+      setName("");
+      toast({
+        title: "Categoria criada com sucesso",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } catch (err: AxiosError | any) {
+      console.error(err);
+      toast({
+        title: err.response.data.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top-right",
+      });
+      setName("");
+      onClose();
+    }
+  };
 
   return (
     <>
@@ -40,7 +90,12 @@ export default function CreateCategoryModal() {
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>Nome: </FormLabel>
-              <Input placeholder="Nome da categoria..." required />
+              <Input
+                placeholder="Nome da categoria..."
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </FormControl>
           </ModalBody>
 
@@ -49,6 +104,7 @@ export default function CreateCategoryModal() {
               bgColor={"#75FFCA"}
               _hover={{ filter: "auto", brightness: "95%" }}
               mr={3}
+              onClick={handleCreateCategory}
             >
               Cadastrar
             </Button>

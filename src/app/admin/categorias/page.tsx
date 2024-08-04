@@ -6,11 +6,16 @@ import TableCategories from "@/components/admin-components/Tables/TableCategorie
 
 import { Category } from "@/types/Category";
 import { useEffect, useState } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
 
 export default function Categories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const api = setupAPIClient();
+
+  function refetchCategories() {
+    api.get("/categories").then((response) => {
+      setCategories(response.data);
+    });
+  }
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -31,7 +36,7 @@ export default function Categories() {
         <h1 className="flex text-2xl font-semibold text-center">Categorias</h1>
       </div>
       <div className="flex w-full max-w-[70vw] flex-col items-center">
-        <CreateCategoryModal />
+        <CreateCategoryModal refetchCategories={refetchCategories}/>
         <TableCategories categories={categories} />
       </div>
     </div>
