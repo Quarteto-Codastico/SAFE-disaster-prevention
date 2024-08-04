@@ -10,9 +10,9 @@ import samu from '../../../public/samu.svg'
 
 export default function Home() {
 	return (
-		<>
+		<div className="mb-14">
         <div
-			className="w-min max-w-[1600px] flex flex-col gap-8 mt-[120px]"
+			className="w-min max-w-[1600px] flex flex-col gap-8 mt-[120px] z-0 "
 		>
 			<HelloUser/>
 		</div>
@@ -27,6 +27,6 @@ export default function Home() {
             <CardEmergency ctt="199" title="Defesa Civil" icon={defesaCivil}  bg="var(--gradientSafe, linear-gradient(285deg, #000 -31.98%, #5A1B8C 0.19%, #540096 25.36%, #3E0981 53.15%, #2F004C 102.03%"/>
             <CardEmergency ctt="199" title="SAMU" icon={samu}  bg="var(--gradientSafe, linear-gradient(285deg, #000 -31.98%, #7C1B8C 0.19%, #8A0096 25.36%, #7E0981 53.15%, #4C0049 102.03%"/>
         </div>
-        </>
+        </div>
 	);
 }
