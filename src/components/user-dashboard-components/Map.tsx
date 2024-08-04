@@ -1,10 +1,13 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Occurrence } from "@/types/Occurrence";
 import { setupAPIClient } from "@/app/lib/api";
+import { useDisclosure } from "@chakra-ui/react";
+import OccurrenceDetailsModal from "./OccurrenceDetailsModal";
 
 // URLs dos ícones para o Leaflet
 const iconUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png";
@@ -15,7 +18,11 @@ const shadowUrl =
 
 const Map = () => {
   const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
+  const [selectedOccurrence, setSelectedOccurrence] =
+    useState<Occurrence | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     const fetchOccurrences = async () => {
@@ -50,46 +57,56 @@ const Map = () => {
     });
   }, []);
 
-  // Verifica se há ocorrências e ajusta o tipo das coordenadas
   const center: L.LatLngExpression =
     occurrences.length > 0
       ? [occurrences[0].latitude, occurrences[0].longitude]
       : [-23.55, -46.63]; // Localização padrão
 
   return (
-    <MapContainer
-      center={center}
-      zoom={13}
-      style={{ height: "100%", width: "100%" }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    <>
+      <MapContainer
+        center={center}
+        zoom={13}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {occurrences.map((occurrence) => (
+          <Marker
+            key={occurrence.id}
+            position={[occurrence.latitude, occurrence.longitude]}
+            icon={
+              new L.Icon({
+                iconUrl,
+                iconRetinaUrl,
+                shadowUrl,
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41],
+              })
+            }
+            eventHandlers={{
+              click: () => {
+                setSelectedOccurrence(occurrence);
+                onOpen();
+              },
+            }}
+          ></Marker>
+        ))}
+      </MapContainer>
+
+      <OccurrenceDetailsModal
+        occurrence={selectedOccurrence}
+        isOpen={isOpen}
+        onClose={() => {
+          setSelectedOccurrence(null);
+          onClose();
+        }}
       />
-      {occurrences.map((occurrence) => (
-        <Marker
-          key={occurrence.id}
-          position={[occurrence.latitude, occurrence.longitude]}
-          icon={
-            new L.Icon({
-              iconUrl,
-              iconRetinaUrl,
-              shadowUrl,
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowSize: [41, 41],
-            })
-          }
-        >
-          <Popup>
-            <strong>{occurrence.title}</strong>
-            <br />
-            {occurrence.description}
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+    </>
   );
 };
 
