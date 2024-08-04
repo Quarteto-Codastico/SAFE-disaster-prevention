@@ -3,7 +3,7 @@ export interface Occurrence {
   title: string;
   description: string;
   status: string;
-  files: any[];
+  files: OccurrenceFiles[];
   zipCode: string;
   latitude: number;
   longitude: number;
@@ -11,4 +11,9 @@ export interface Occurrence {
   updatedAt: string;
   userId: string;
   categoryId: string;
+}
+
+export type OccurrenceFiles = {
+  filename: string;
+  filePath: string;
 }

@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Occurrence } from "@/types/Occurrence";
 import { setupAPIClient } from "@/app/lib/api";
+import OccurrenceDetailsModal from "./OccurrenceDetailsModal";
 
 // URLs dos ícones para o Leaflet
 const iconUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png";
@@ -16,6 +17,28 @@ const shadowUrl =
 const Map = () => {
   const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [center, setCenter] = useState<L.LatLngExpression | null>(null);
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCenter([position.coords.latitude, position.coords.longitude]);
+        },
+        (err) => {
+          setError(err.message);
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  console.log(center);
 
   useEffect(() => {
     const fetchOccurrences = async () => {
@@ -51,12 +74,8 @@ const Map = () => {
   }, []);
 
   // Verifica se há ocorrências e ajusta o tipo das coordenadas
-  const center: L.LatLngExpression =
-    occurrences.length > 0
-      ? [occurrences[0].latitude, occurrences[0].longitude]
-      : [-23.55, -46.63]; // Localização padrão
 
-  return (
+  return center ? (
     <MapContainer
       center={center}
       zoom={13}
@@ -83,14 +102,16 @@ const Map = () => {
           }
         >
           <Popup>
-            <strong>{occurrence.title}</strong>
-            <br />
-            {occurrence.description}
+            <OccurrenceDetailsModal occurrence={occurrence} />
           </Popup>
         </Marker>
       ))}
     </MapContainer>
+  ) : (
+    <div className="w-full flex justify-center py-10 text-white">
+      Erro ao carregar a localização, por favor ative a localização do seu
+      navegador e recarregue a página.
+    </div>
   );
 };
-
 export default Map;
