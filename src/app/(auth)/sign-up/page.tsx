@@ -69,7 +69,7 @@ export default function SignUp() {
           country: "Brasil",
           zipCode: data.cep || "",
         });
-        setError(""); // Limpa qualquer mensagem de erro
+        setError("");
       } else {
         setAddress({
           street: "",
