@@ -23,13 +23,6 @@ const OccurrenceDetailsModal: React.FC<OccurrenceDetailsModalProps> = ({
   occurrence,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [files, setFile] = useState<OccurrenceFiles[] | null>(null);
-
-  useEffect(() => {
-    if (occurrence && occurrence.files.length > 0) {
-      setFile(occurrence.files);
-    }
-  }, [occurrence]);
 
   if (!occurrence) return null;
 
@@ -54,19 +47,6 @@ const OccurrenceDetailsModal: React.FC<OccurrenceDetailsModalProps> = ({
             <p className="text-sm px-4 text-center font-light">
               {occurrence.description}
             </p>
-            {files && (
-              <div className="flex justify-center flex-wrap gap-4">
-                {files.map((file) => (
-                  <Image
-                    key={file.filename}
-                    alt="Imagem da ocorrência"
-                    src={file.filePath}
-                    width={200}
-                    height={200}
-                  />
-                ))}
-              </div>
-            )}
             <div className="flex justify-center mt-6">
               <Link
                 href={`https://www.google.com/maps?q=${occurrence.latitude},${occurrence.longitude}`}
