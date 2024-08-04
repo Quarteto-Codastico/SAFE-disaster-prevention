@@ -10,4 +10,5 @@ export type Campaign = {
     startDate: Date;
     endDate: Date;
     status: string;
+    qrCode: string;
 }
