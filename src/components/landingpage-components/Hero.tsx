@@ -3,7 +3,7 @@ import backgorundHero from "../../../public/fundo_hero.png";
 
 export default function Hero() {
 	return (
-		<div className="flex relative max-w-[1600px] w-[100%] h-[700px] bg-clientGradient self-center mx-auto pt-[80px]">
+		<div id='hero' className="flex relative max-w-[1600px] w-[100%] h-[700px] bg-clientGradient self-center mx-auto pt-[80px]">
 			<div className="absolute flex gap-8 flex-col pl-16 w-[870px] top-[50%] -translate-y-1/2 pt-[80px]">
 				<h1 className="text-white text-5xl font-bold ">
 					Uma plataforma feita pra salvar vidas! Ajude-nos a tornar o mundo um

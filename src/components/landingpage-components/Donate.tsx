@@ -5,7 +5,7 @@ import donateBg from "../../../public/donate.svg";
 
 export default function Donate() {
 	return (
-		<div className="relative h-[1159px] w-[100%] max-w-[1600px] pl-[115px] overflow-hidden mx-auto">
+		<div id='donate' className="relative h-[1159px] w-[100%] max-w-[1600px] pl-[115px] overflow-hidden mx-auto pt-[110px]">
 			<h1 className="text-[#5B5B5B] font-semibold text-4xl pb-14 w-[700px]">
 				Doar támbem faz parte, ajude quem necessita! Sua ajuda muda vidas.
 			</h1>

@@ -10,13 +10,13 @@ export default function Header() {
 					<Image src={logoSafe} alt="logo-safe" className="h-[49px] w-[119px]" />
 				</div>
 				<div className="flex flex-1 gap-8 justify-center items-center">
-					<a href="" className="flex gap-3 justify-center items-center text-sm">
+					<a href="#hero" className="flex gap-3 justify-center items-center text-sm">
 						SOBRE <IoIosArrowDown />
 					</a>
-					<a href="" className="flex gap-3 justify-center items-center text-sm">
+					<a href="#features" className="flex gap-3 justify-center items-center text-sm">
 						FUNCIONALIDADES <IoIosArrowDown />
 					</a>
-					<a href="" className="flex gap-3 justify-center items-center text-sm">
+					<a href="#donate" className="flex gap-3 justify-center items-center text-sm">
 						DOAÇÔES <IoIosArrowDown />
 					</a>
 				</div>
