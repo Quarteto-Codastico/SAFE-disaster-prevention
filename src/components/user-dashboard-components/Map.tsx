@@ -1,14 +1,16 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Occurrence } from "@/types/Occurrence";
 import { setupAPIClient } from "@/app/lib/api";
-import { useDisclosure } from "@chakra-ui/react";
-import OccurrenceDetailsModal from "./OccurrenceDetailsModal";
+import AdminOccurrenceDetailsModal from "../admin-components/Modals/AdminOccurrenceDetailsModal";
 
+export type MapProps = {
+  latitude: number | null;
+  longitude: number | null;
+};
 // URLs dos ícones para o Leaflet
 const iconUrl = "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png";
 const iconRetinaUrl =
@@ -16,13 +18,18 @@ const iconRetinaUrl =
 const shadowUrl =
   "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png";
 
-const Map = () => {
+const Map = ({ latitude, longitude }: MapProps) => {
   const [occurrences, setOccurrences] = useState<Occurrence[]>([]);
-  const [selectedOccurrence, setSelectedOccurrence] =
-    useState<Occurrence | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [center, setCenter] = useState<L.LatLngExpression | null>(null);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  useEffect(() => {
+    if (latitude && longitude) {
+      setCenter([latitude, longitude]);
+    }
+  }, [latitude, longitude]);
+
+  console.log(center);
 
   useEffect(() => {
     const fetchOccurrences = async () => {
@@ -57,56 +64,45 @@ const Map = () => {
     });
   }, []);
 
-  const center: L.LatLngExpression =
-    occurrences.length > 0
-      ? [occurrences[0].latitude, occurrences[0].longitude]
-      : [-23.55, -46.63]; // Localização padrão
+  // Verifica se há ocorrências e ajusta o tipo das coordenadas
 
-  return (
-    <>
-      <MapContainer
-        center={center}
-        zoom={13}
-        style={{ height: "100%", width: "100%" }}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        {occurrences.map((occurrence) => (
-          <Marker
-            key={occurrence.id}
-            position={[occurrence.latitude, occurrence.longitude]}
-            icon={
-              new L.Icon({
-                iconUrl,
-                iconRetinaUrl,
-                shadowUrl,
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41],
-              })
-            }
-            eventHandlers={{
-              click: () => {
-                setSelectedOccurrence(occurrence);
-                onOpen();
-              },
-            }}
-          ></Marker>
-        ))}
-      </MapContainer>
-
-      <OccurrenceDetailsModal
-        occurrence={selectedOccurrence}
-        isOpen={isOpen}
-        onClose={() => {
-          setSelectedOccurrence(null);
-          onClose();
-        }}
+  return center ? (
+    <MapContainer
+      center={center}
+      zoom={13}
+      style={{ height: "100%", width: "100%" }}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-    </>
+      {occurrences.map((occurrence) => (
+        <Marker
+          key={occurrence.id}
+          position={[occurrence.latitude, occurrence.longitude]}
+          icon={
+            new L.Icon({
+              iconUrl,
+              iconRetinaUrl,
+              shadowUrl,
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41],
+            })
+          }
+        >
+          <Popup>
+            <AdminOccurrenceDetailsModal occurrence={occurrence} />
+          </Popup>
+        </Marker>
+      ))}
+    </MapContainer>
+  ) : (
+    <div className="w-full flex justify-center py-10 text-white">
+      Erro ao carregar a localização, por favor ative a localização do seu
+      navegador e recarregue a página.
+    </div>
   );
 };
 
