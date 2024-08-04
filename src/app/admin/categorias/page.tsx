@@ -33,7 +33,9 @@ export default function Categories() {
   return (
     <div className="flex flex-col min-h-[60vh] gap-4 items-center mt-[110px]">
       <div className="w-full flex flex-row justify-center">
-        <h1 className="flex text-2xl font-semibold text-center text-white">Categorias</h1>
+        <h1 className="flex text-2xl font-semibold text-center text-white">
+          Categorias
+        </h1>
       </div>
       <div className="flex w-full max-w-[70vw] flex-col items-center">
         <CreateCategoryModal refetchCategories={refetchCategories} />
