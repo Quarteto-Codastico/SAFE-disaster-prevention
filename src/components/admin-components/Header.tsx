@@ -30,28 +30,22 @@ export default function Header() {
         </div>
         <div className="flex flex-1 gap-8 justify-center items-center text-white">
           <a
-            href=""
-            className="flex gap-3 justify-center items-center text-sm "
+            href="/admin"
+            className="flex gap-3 justify-center items-center text-sm text-[#fff]"
           >
-            ÁREA DE ALERTAS <IoIosArrowDown />
+            OCORRÊNCIAS <IoIosArrowDown />
           </a>
           <a
-            href=""
-            className="flex gap-3 justify-center items-center text-sm "
+            href="/admin/donate"
+            className="flex gap-3 justify-center items-center text-sm text-[#fff]"
           >
-            HISTÓRICO <IoIosArrowDown />
+            CAMPANHA DE DOAÇÃO <IoIosArrowDown />
           </a>
           <a
-            href=""
-            className="flex gap-3 justify-center items-center text-sm "
+            href="/admin/categorias"
+            className="flex gap-3 justify-center items-center text-sm text-[#fff]"
           >
-            CRIAR ALERTA <IoIosArrowDown />
-          </a>
-          <a
-            href=""
-            className="flex gap-3 justify-center items-center text-sm "
-          >
-            CRIAR CAMPANHA DE DOAÇÃO <IoIosArrowDown />
+            CATEGORIAS <IoIosArrowDown />
           </a>
         </div>
         <div className="flex justify-center flex-2 items-center gap-6">
