@@ -1,17 +1,9 @@
 "use client";
 
 import { setupAPIClient } from "@/app/lib/api";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import TableCategories from "@/components/admin-components/Tables/TableCategories";
+
 import { Category } from "@/types/Category";
-import { getFormattedDate } from "@/utils/getFormattedDate";
 import { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 
@@ -32,8 +24,6 @@ export default function Categories() {
     fetchCategories();
   }, []);
 
-  console.log(categories);
-
   return (
     <div className="flex flex-col min-h-[60vh] gap-4 items-center">
       <div className="w-full flex flex-row justify-center">
@@ -41,42 +31,11 @@ export default function Categories() {
       </div>
       <div className="flex w-full max-w-[70vw] flex-col items-center">
         <div className="w-full flex justify-end">
-          <button className="bg-green-500 p-2 rounded-xl text-white flex items-center gap-2">
+          <button className="bg-[#75FFCA] p-2 rounded-t-xl flex items-center gap-2 font-semibold">
             Adicionar categoria <AiOutlinePlus />
           </button>
         </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nome</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Criado em</TableHead>
-              <TableHead className="text-right">Última atualização</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell>{category.status.toUpperCase()}</TableCell>
-                  <TableCell className="text-right">
-                    {getFormattedDate(category.createdAt)}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    {getFormattedDate(category.updatedAt)}
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={4} className="text-center">
-                  Nenhuma categoria encontrada
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        <TableCategories categories={categories} />
       </div>
     </div>
   );
