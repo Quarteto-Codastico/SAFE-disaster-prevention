@@ -1,5 +1,5 @@
 import Image from "next/image";
-import add from "../../../../public/Xbox Cross.svg";
+import add from "../../../../public/plus.svg";
 import {
   Modal,
   ModalBody,
@@ -61,7 +61,7 @@ export const CardAddDonate: React.FC = ({}) => {
         <Image
           src={add}
           alt="add"
-          className={`absolute right-[14rem] w-[180px] h-[180px] rounded-full`}
+          className={`absolute right-[7rem] top-[50%] translate-y-[-50%] scale-[30%] rounded-full`}
         />
         <div className="my-auto text-[#fff] self-end w-[250px]">
           <h1 className=" font-bold text-3xl pl-8">Adicionar Campanha</h1>

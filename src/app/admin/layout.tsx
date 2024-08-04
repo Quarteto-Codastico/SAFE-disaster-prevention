@@ -7,7 +7,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col justify-between min-h-[100vh] bg-[#2F2F2F]">
+    <div className="flex flex-col min-h-[100vh] bg-[#2F2F2F]">
       <AdminHeader />
       {children}
       <AdminFooter />
