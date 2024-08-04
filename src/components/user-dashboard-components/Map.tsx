@@ -29,8 +29,6 @@ const Map = ({ latitude, longitude }: MapProps) => {
     }
   }, [latitude, longitude]);
 
-  console.log(center);
-
   useEffect(() => {
     const fetchOccurrences = async () => {
       try {

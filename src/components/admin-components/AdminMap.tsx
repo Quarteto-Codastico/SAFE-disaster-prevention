@@ -29,7 +29,6 @@ const AdminMap = ({ latitude, longitude }: AdminMapProps) => {
     }
   }, [latitude, longitude]);
 
-  console.log(center);
 
   useEffect(() => {
     const fetchOccurrences = async () => {

@@ -16,7 +16,6 @@ export default function donate() {
     
 		try {
 			const response = await api.get("/campaigns");
-			console.log(response)
 			setCampaigns(response.data)
 		  } catch (err: any) {
 			console.log(err);
