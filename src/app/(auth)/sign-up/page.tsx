@@ -1,18 +1,61 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import InputMask from "react-input-mask";
+import { setupAPIClient } from "@/app/lib/api";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+// Lista de estados do Brasil
+const states = [
+  { code: "AC", name: "Acre" },
+  { code: "AL", name: "Alagoas" },
+  { code: "AP", name: "Amapá" },
+  { code: "AM", name: "Amazonas" },
+  { code: "BA", name: "Bahia" },
+  { code: "CE", name: "Ceará" },
+  { code: "DF", name: "Distrito Federal" },
+  { code: "ES", name: "Espírito Santo" },
+  { code: "GO", name: "Goiás" },
+  { code: "MA", name: "Maranhão" },
+  { code: "MT", name: "Mato Grosso" },
+  { code: "MS", name: "Mato Grosso do Sul" },
+  { code: "MG", name: "Minas Gerais" },
+  { code: "PA", name: "Pará" },
+  { code: "PB", name: "Paraíba" },
+  { code: "PR", name: "Paraná" },
+  { code: "PE", name: "Pernambuco" },
+  { code: "PI", name: "Piauí" },
+  { code: "RJ", name: "Rio de Janeiro" },
+  { code: "RN", name: "Rio Grande do Norte" },
+  { code: "RS", name: "Rio Grande do Sul" },
+  { code: "RO", name: "Rondônia" },
+  { code: "RR", name: "Roraima" },
+  { code: "SC", name: "Santa Catarina" },
+  { code: "SP", name: "São Paulo" },
+  { code: "SE", name: "Sergipe" },
+  { code: "TO", name: "Tocantins" },
+];
 
 export default function SignUp() {
   const [cep, setCep] = useState("");
   const [address, setAddress] = useState({
     street: "",
-    neighborhood: "",
     city: "",
-    number: "",
+    state: "",
+    country: "Brasil",
+    zipCode: "",
   });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [cpf, setCpf] = useState("");
   const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [conflictError, setConflictError] = useState("");
+
+  const router = useRouter();
 
   const fetchAddress = async (cep: string) => {
     try {
@@ -21,24 +64,24 @@ export default function SignUp() {
       if (!data.erro) {
         setAddress({
           street: data.logradouro || "",
-          neighborhood: data.bairro || "",
           city: data.localidade || "",
-          number: "", // Mantém o número em branco para o usuário preencher
+          state: data.uf || "",
+          country: "Brasil",
+          zipCode: data.cep || "",
         });
         setError(""); // Limpa qualquer mensagem de erro
       } else {
-        // Tratar erro de CEP inválido
         setAddress({
           street: "",
-          neighborhood: "",
           city: "",
-          number: "",
+          state: "",
+          country: "Brasil",
+          zipCode: "",
         });
         setError("CEP não encontrado.");
       }
     } catch (error) {
       console.error("Erro ao buscar o CEP:", error);
-      // Tratar erros de requisição
       setError("Erro ao buscar o CEP. Tente novamente.");
     }
   };
@@ -47,19 +90,68 @@ export default function SignUp() {
     const newCep = event.target.value;
     setCep(newCep);
 
-    // Verifica se o CEP tem o formato completo (99999-999) para fazer a busca
-    if (newCep.length === 10 && newCep.includes("-")) {
-      const cepOnlyNumbers = newCep.replace(/\D/g, ""); // Remove caracteres não numéricos
+    if (newCep.length === 9 && newCep.includes("-")) {
+      const cepOnlyNumbers = newCep.replace(/\D/g, "");
       fetchAddress(cepOnlyNumbers);
     } else {
-      // Limpa os dados se o CEP for inválido ou incompleto
       setAddress({
         street: "",
-        neighborhood: "",
         city: "",
-        number: "",
+        state: "",
+        country: "Brasil",
+        zipCode: "",
       });
       setError("");
+    }
+  };
+
+  useEffect(() => {
+    if (cep.length === 9 && cep.includes("-")) {
+      const cepOnlyNumbers = cep.replace(/\D/g, "");
+      fetchAddress(cepOnlyNumbers);
+    }
+  }, [cep]);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (password !== confirmPassword) {
+      setPasswordError("As senhas não coincidem.");
+      return;
+    } else {
+      setPasswordError("");
+    }
+
+    const api = setupAPIClient();
+
+    try {
+      await api.post(
+        "/users",
+        {
+          name,
+          email,
+          password,
+          role: "client",
+          cpf,
+          address: {
+            street: address.street,
+            city: address.city,
+            state: address.state,
+            country: address.country,
+            zipCode: address.zipCode,
+          },
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      router.push("/sign-in");
+    } catch (err: any) {
+      if (err.response?.status === 409) {
+        setConflictError("Usuário já existente.");
+      } else {
+        console.error("Erro ao cadastrar usuário:", err);
+      }
     }
   };
 
@@ -71,7 +163,7 @@ export default function SignUp() {
       </div>
       <form
         className="w-full flex flex-col items-center gap-2 text-[#5B5B5B]"
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={handleSubmit}
       >
         <div className="w-[550px] flex flex-col gap-1">
           <label htmlFor="name" className="text-lg">
@@ -82,8 +174,40 @@ export default function SignUp() {
             type="text"
             placeholder="Digite seu nome"
             className="w-full h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
+        </div>
+        <div className="w-[550px] flex flex-row gap-2">
+          <div className="flex flex-col flex-1">
+            <label htmlFor="email" className="text-lg">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Digite seu email"
+              className="w-full h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-col">
+            <label htmlFor="cpf" className="text-lg">
+              CPF
+            </label>
+            <InputMask
+              id="cpf"
+              mask="999.999.999-99"
+              placeholder="Digite seu CPF"
+              className="w-full h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
+              value={cpf}
+              onChange={(e) => setCpf(e.target.value)}
+              required
+            />
+          </div>
         </div>
         <div className="w-[550px] flex flex-col gap-1">
           <label className="text-lg">Endereço</label>
@@ -96,24 +220,7 @@ export default function SignUp() {
                 className="flex-1 h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
                 value={cep}
                 onChange={handleCepChange}
-              />
-              <input
-                id="neighborhood"
-                type="text"
-                placeholder="Bairro"
-                className="flex-1 h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
-                value={address.neighborhood}
-                readOnly
-              />
-              <input
-                id="number"
-                type="text"
-                placeholder="Número"
-                className="flex-1 h-9 w-[52px] px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
-                value={address.number}
-                onChange={(e) =>
-                  setAddress({ ...address, number: e.target.value })
-                }
+                required
               />
             </div>
             <div className="flex gap-2">
@@ -123,34 +230,48 @@ export default function SignUp() {
                 placeholder="Rua"
                 className="flex-1 h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
                 value={address.street}
-                readOnly
+                onChange={(e) =>
+                  setAddress({ ...address, street: e.target.value })
+                }
+                required
               />
               <input
                 id="city"
                 type="text"
                 placeholder="Cidade"
-                className="flex-1 h-9 w-[50px] px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
+                className="h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
                 value={address.city}
-                readOnly
+                onChange={(e) =>
+                  setAddress({ ...address, city: e.target.value })
+                }
+                required
               />
+              <select
+                id="state"
+                className="w-[70px] h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
+                value={address.state}
+                onChange={(e) =>
+                  setAddress({ ...address, state: e.target.value })
+                }
+                required
+              >
+                <option value="" disabled>
+                  Estado
+                </option>
+                {states.map((state) => (
+                  <option key={state.code} value={state.code}>
+                    {state.code}
+                  </option>
+                ))}
+              </select>
             </div>
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            <p className="text-red-500 text-sm mt-1">{error}</p>
           </div>
         </div>
         <div className="w-[550px] flex flex-col gap-1">
-          <label htmlFor="email" className="text-lg">
-            Email
+          <label htmlFor="password" className="text-lg">
+            Senha
           </label>
-          <input
-            id="email"
-            type="email"
-            placeholder="Digite seu email"
-            className="w-full h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
-            required
-          />
-        </div>
-        <div className="w-[550px] flex flex-col gap-1">
-          <label className="text-lg">Senha</label>
           <div className="flex flex-row gap-2">
             <input
               id="password"
@@ -158,25 +279,41 @@ export default function SignUp() {
               placeholder="Digite sua senha"
               className="w-full h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <input
-              id="confirm-password"
+              id="confirmPassword"
               type="password"
               placeholder="Confirme sua senha"
               className="w-full h-9 px-3 border text-[#9F9F9F] border-[#D1D1D1] rounded-lg text-sm font-normal"
               required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
+          {passwordError && (
+            <p className="text-red-500 text-sm mt-1">{passwordError}</p>
+          )}
+          {conflictError && (
+            <p className="text-red-500 text-sm mt-1">{conflictError}</p>
+          )}
         </div>
+
         <button
           type="submit"
-          className="w-[550px] h-[50px] bg-clientGradient text-[#5B5B5B] rounded-lg mt-4 text-xl font-semibold"
+          className="w-[342px] h-[58px] bg-clientGradient text-[#5B5B5B] rounded-lg mt-4 text-xl font-semibold"
         >
           CADASTRAR-SE
         </button>
-        <Link href="/sign-in" className="no-underline text-xs font-normal">
-          Já tem uma conta? Clique aqui
-        </Link>
+        <div className="mt-4 text-xs font-normal">
+          <p>
+            Já tem cadastro?{" "}
+            <Link href="/sign-in" className="text-[#4CAF50]">
+              Clique aqui
+            </Link>
+          </p>
+        </div>
       </form>
     </>
   );

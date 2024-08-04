@@ -31,10 +31,10 @@ export default function SignIn() {
         }
       );
 
-      const { access_token } = response.data; // Ajuste para extrair o access_token
+      const { access_token } = response.data;
 
       if (access_token) {
-        Cookies.set("token", access_token); // Armazenar o token nos cookies
+        Cookies.set("token", access_token);
 
         router.push("/dashboard");
       }
