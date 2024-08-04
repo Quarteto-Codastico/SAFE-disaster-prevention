@@ -27,7 +27,7 @@ export default function donate() {
        effectGetPosts();
       }, []);
 	return (
-		<div className="flex flex-col justify-center items-center w-100%  max-w-[1600px] mt-[110px] mb-16">
+		<div className="flex flex-col justify-center items-center w-100%  max-w-[1600px] mb-16 mt-10">
 			<h1 className="text-[#fff] text-2xl font-bold self-center mb-8">
 				Campanhas de Doação
 			</h1>
