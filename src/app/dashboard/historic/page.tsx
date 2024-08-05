@@ -17,13 +17,11 @@ export default function Historic() {
 			borderWidth: "1px",
 			borderRadius: "md",
 			boxShadow: "md",
-			overflowX: "auto",
 		},
 		lg: {
 			borderWidth: "1px",
 			borderRadius: "md",
 			boxShadow: "md",
-			overflowX: "auto",
 		},
 	});
 

@@ -34,8 +34,9 @@ export default function Donate() {
 
 				{
 					campaigns && campaigns?.length > 0 && (
-						campaigns.map(campaign => (
+						campaigns.map((campaign, index) => (
 							<CardDonate
+							key={index}
 							qrCode={campaign.qrCode}
 							title={campaign.name}
 							desc={campaign.description}
