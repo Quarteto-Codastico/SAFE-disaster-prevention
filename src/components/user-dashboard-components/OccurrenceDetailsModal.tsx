@@ -20,8 +20,9 @@ interface OccurrenceDetailsModalProps {
 const OccurrenceDetailsModal: React.FC<OccurrenceDetailsModalProps> = ({
   occurrence,
 }) => {
-  if (!occurrence) return null;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
+  if (!occurrence) return null;
 
   return (
     <>

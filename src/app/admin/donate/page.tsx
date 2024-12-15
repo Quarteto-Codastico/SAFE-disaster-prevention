@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import { setupAPIClient } from "@/app/lib/api";
 import { Campaign } from "@/types/Campaing";
 
-export default function donate() {
+export default function Donate() {
 
 	const [campaigns, setCampaigns] = useState<Campaign[]>([]);
     const api = setupAPIClient();
@@ -35,8 +35,9 @@ export default function donate() {
 
 				{
 					campaigns && campaigns?.length > 0 && (
-						campaigns.map(campaign => (
+						campaigns.map((campaign, index) => (
 							<CardDonateAdmin
+							key={index}
 							id={campaign.id}
 							title={campaign.name}
 							desc={campaign.description}
